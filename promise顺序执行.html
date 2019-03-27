@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+   function a() {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        console.log('a')
+        resolve('a')
+      }, 1000)
+    })
+  }
+
+  function b(data) {
+    return new Promise(function(resolve, reject) {
+      console.log('b')
+      resolve(data +'b')
+    })
+  }
+
+   function c(data) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        console.log('c')
+        resolve(data +'c')
+      }, 500)
+    })
+  }
+
+  // 组织函数队列
+  function reduce(arr) {
+    var sequence = Promise.resolve()
+    arr.forEach(function(item) {
+      sequence = sequence.then(item)
+    })
+    return sequence
+  }
+
+  // 顺序执行函数队列
+  reduce([a, b, c])
+    .then(function(data) {
+      console.log(data)// abc
+    })
+    .catch(function(e) {
+      console.log(e)
+    })
+</script>
+</body>
+</html>
